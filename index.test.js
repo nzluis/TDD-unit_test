@@ -62,4 +62,33 @@ describe('Room percentage occupancy', () => {
         expect(room.occupancyPercentage('2024-01-05', '2024-01-01')).toBe(NaN)
     })
 })
+
+describe('Total rooms percentage occupancy', () => {
+    const room1 = new Room({...roomTemplate})
+    const room2 = new Room({...roomTemplate, name: 'Double Bed'})
+    const room3 = new Room({...roomTemplate, name: 'Suite'})
+    const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room1})
+    const booking2 = new Booking({...bookingTemplate, checkin: '2024-02-02', checkout: '2024-02-06', room: room1})
+    const booking3 = new Booking({...bookingTemplate, checkin: '2024-05-10', checkout: '2024-05-15', room: room1})
+    const booking4 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room2})
+    const booking5 = new Booking({...bookingTemplate, checkin: '2024-02-06', checkout: '2024-02-10', room: room2})
+    const booking6 = new Booking({...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room2})
+    const booking7 = new Booking({...bookingTemplate, checkin: '2024-05-05', checkout: '2024-05-12', room: room2})
+    room1.bookings = [ booking1, booking2, booking3 ]
+    room2.bookings = [ booking4, booking5, booking6 ]
+    room3.bookings = [ booking1, booking6, booking7 ]
+    const rooms = [room1, room2, room3]
+
+    test('100% total occupancy', () => {
+        expect(room1.totalOccupancyPercentage(rooms, '2024-01-02', '2024-01-05')).toBe(100)
+    })
+    test('50% total occupancy', () => {
+        expect(room1.totalOccupancyPercentage(rooms, '2024-05-10', '2024-05-13')).toBe(50)
+    })
+    test('33% total occupancy', () => {
+        expect(room1.totalOccupancyPercentage(rooms, '2024-02-02', '2024-02-06')).toBe(33)
+    })
+    test('0% total occupancy', () => {
+        expect(room1.totalOccupancyPercentage(rooms, '2024-05-19', '2024-05-19')).toBe(0)
+    })
 })
