@@ -26,7 +26,10 @@ class Room {
     }
 
     totalOccupancyPercentage(rooms, startDate, endDate) {
-
+        const percentages = rooms.map( room => room.occupancyPercentage(startDate, endDate))
+        return Math.trunc(percentages.reduce( (sum, percentage) =>  {
+            return sum + percentage
+        }, 0) /percentages.length)
     }
 
     availableRooms(rooms, startDate, endDate) {
