@@ -1,15 +1,19 @@
 class Room {
 
-    constructor(name, rate, discount) {
+    constructor({name, rate, discount}) {
         this.name = name
         this.bookings = []
-        this.rate = rate
         this.discount = discount
+        this.rate = rate * (1 - this.discount/100) * 100
     }
-    
+
     isOccupied(date) {
-        if(date)
-    }
+        let isDateInsideRange = false
+        for (let i = 0; i < this.bookings.length ; i++) {
+            if (date >= this.bookings[i].checkin && date < this.bookings[i].checkout) isDateInsideRange = true
+        }
+        return isDateInsideRange
+    }   
 
     occupancyPercentage(startDate, endDate) {
 
@@ -25,7 +29,7 @@ class Room {
 }
 
 class Booking {
-    constructor(name, email, checkin, checkout, discount) {
+    constructor({name, email, checkin, checkout, discount}) {
         this.name = name
         this.email = email
         this.checkin = checkin
@@ -38,7 +42,5 @@ class Booking {
 
     }
 }
-
-
 
 module.exports = {Room, Booking}
