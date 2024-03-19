@@ -88,6 +88,9 @@ describe('Total rooms percentage occupancy', () => {
     test('33% total occupancy', () => {
         expect(room1.totalOccupancyPercentage(rooms, '2024-02-02', '2024-02-06')).toBe(33)
     })
+    test('0% total occupancy', () => {
+        expect(room1.totalOccupancyPercentage(rooms, '2025-02-02', '2025-02-06')).toBe(0)
+    })
 })
 
 describe(('Available rooms '), () => {
@@ -111,24 +114,24 @@ describe(('Available rooms '), () => {
     test('3 rooms full available', () => {
         expect(room1.availableRooms(rooms, '2024-01-15', '2024-01-20')).toHaveLength(3)
     })
-    test('2 rooms available', () => {
+    test("2 rooms available & third doesn't match ", () => {
         expect(room1.availableRooms(rooms, '2024-05-06', '2024-05-09')).toHaveLength(2)
     })
-    test('1 room available', () => {
+    test('2 rooms available & third match some days', () => {
+        expect(room1.availableRooms(rooms, '2024-01-08', '2024-01-12')).toHaveLength(2)
+    })
+    test("1 room available & rest don't match", () => {
         expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-04')).toHaveLength(1)
         expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-04')[0].name).toBe('Double Bed')
     })
-    test('1 room available & others some days', () => {
+    test('1 room available & others match some days', () => {
         expect(room1.availableRooms(rooms, '2024-05-16', '2024-05-23')).toHaveLength(1)
         expect(room1.availableRooms(rooms, '2024-05-16', '2024-05-23')[0].name).toBe('Single Bed')
     })
-    test('2 rooms available & the other some days', () => {
-        expect(room1.availableRooms(rooms, '2024-01-08', '2024-01-12')).toHaveLength(2)
-    })
-    test('no rooms availables out of range', () => {
+    test('no rooms available - all out of range', () => {
         expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-05')).toHaveLength(0)
     })
-    test('no rooms availables but match some days', () => {
+    test('no rooms available but match some days', () => {
         expect(room1.availableRooms(rooms, '2024-05-10', '2024-05-25')).toHaveLength(0)
     })
 })
