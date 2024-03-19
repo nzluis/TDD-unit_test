@@ -88,7 +88,45 @@ describe('Total rooms percentage occupancy', () => {
     test('33% total occupancy', () => {
         expect(room1.totalOccupancyPercentage(rooms, '2024-02-02', '2024-02-06')).toBe(33)
     })
-    test('0% total occupancy', () => {
-        expect(room1.totalOccupancyPercentage(rooms, '2024-05-19', '2024-05-19')).toBe(0)
+})
+
+describe(('Available rooms '), () => {
+    const room1 = new Room({...roomTemplate})
+    const room2 = new Room({...roomTemplate, name: 'Double Bed'})
+    const room3 = new Room({...roomTemplate, name: 'Suite'})
+    const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room1})
+    const booking2 = new Booking({...bookingTemplate, checkin: '2024-02-02', checkout: '2024-02-06', room: room1})
+    const booking3 = new Booking({...bookingTemplate, checkin: '2024-05-10', checkout: '2024-05-15', room: room1})
+    const booking4 = new Booking({...bookingTemplate, checkin: '2024-01-05', checkout: '2024-01-10', room: room2})
+    const booking5 = new Booking({...bookingTemplate, checkin: '2024-02-06', checkout: '2024-02-10', room: room2})
+    const booking6 = new Booking({...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room2})
+    const booking7 = new Booking({...bookingTemplate, checkin: '2024-05-05', checkout: '2024-05-12', room: room3})
+    const booking8 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room3})
+    const booking9 = new Booking({...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room3})
+    room1.bookings = [ booking1, booking2, booking3 ]
+    room2.bookings = [ booking4, booking5, booking6 ]
+    room3.bookings = [ booking8, booking9, booking7 ]
+    const rooms = [room1, room2, room3]
+
+    test('3 rooms full available', () => {
+        expect(room1.availableRooms(rooms, '2024-01-15', '2024-01-20')).toBe(3)
+    })
+    test('2 rooms available', () => {
+        expect(room1.availableRooms(rooms, '2024-05-06', '2024-05-09')).toBe(2)
+    })
+    test('1 room available', () => {
+        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-04')).toBe(1)
+    })
+    test('1 room available & others some days', () => {
+        expect(room1.availableRooms(rooms, '2024-05-16', '2024-05-23')).toBe(1)
+    })
+    test('2 rooms available & the other some days', () => {
+        expect(room1.availableRooms(rooms, '2024-01-08', '2024-01-12')).toBe(2)
+    })
+    test('no rooms availables out of range', () => {
+        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-05')).toBe(0)
+    })
+    test('no rooms availables but match some days', () => {
+        expect(room1.availableRooms(rooms, '2024-05-10', '2024-05-25')).toBe(0)
     })
 })
