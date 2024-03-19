@@ -12,6 +12,7 @@ class Room {
         let isDateInsideRange = false
         for (let i = 0; i < this.bookings.length ; i++) {
             if (date >= this.bookings[i].checkin && date < this.bookings[i].checkout) isDateInsideRange = true
+            if (isDateInsideRange) break
         }
         return isDateInsideRange
     }   
@@ -68,14 +69,12 @@ function getDatesInRange(startDate, endDate) {
     const end = new Date(new Date(endDate))
     
     const date = new Date(start.getTime())
-
     const dates = [];
 
     while (date <= end) {
     dates.push(new Date(date).toISOString().slice(0,10));
     date.setDate(date.getDate() + 1);
     }
-
     return dates;
 }
 
