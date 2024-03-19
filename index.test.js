@@ -109,24 +109,26 @@ describe(('Available rooms '), () => {
     const rooms = [room1, room2, room3]
 
     test('3 rooms full available', () => {
-        expect(room1.availableRooms(rooms, '2024-01-15', '2024-01-20')).toBe(3)
+        expect(room1.availableRooms(rooms, '2024-01-15', '2024-01-20')).toHaveLength(3)
     })
     test('2 rooms available', () => {
-        expect(room1.availableRooms(rooms, '2024-05-06', '2024-05-09')).toBe(2)
+        expect(room1.availableRooms(rooms, '2024-05-06', '2024-05-09')).toHaveLength(2)
     })
     test('1 room available', () => {
-        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-04')).toBe(1)
+        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-04')).toHaveLength(1)
+        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-04')[0].name).toBe('Double Bed')
     })
     test('1 room available & others some days', () => {
-        expect(room1.availableRooms(rooms, '2024-05-16', '2024-05-23')).toBe(1)
+        expect(room1.availableRooms(rooms, '2024-05-16', '2024-05-23')).toHaveLength(1)
+        expect(room1.availableRooms(rooms, '2024-05-16', '2024-05-23')[0].name).toBe('Single Bed')
     })
     test('2 rooms available & the other some days', () => {
-        expect(room1.availableRooms(rooms, '2024-01-08', '2024-01-12')).toBe(2)
+        expect(room1.availableRooms(rooms, '2024-01-08', '2024-01-12')).toHaveLength(2)
     })
     test('no rooms availables out of range', () => {
-        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-05')).toBe(0)
+        expect(room1.availableRooms(rooms, '2024-01-02', '2024-01-05')).toHaveLength(0)
     })
     test('no rooms availables but match some days', () => {
-        expect(room1.availableRooms(rooms, '2024-05-10', '2024-05-25')).toBe(0)
+        expect(room1.availableRooms(rooms, '2024-05-10', '2024-05-25')).toHaveLength(0)
     })
 })
