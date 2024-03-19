@@ -1,9 +1,9 @@
 const { Booking, Room } = require('./index')
 
 const roomTemplate = { name: 'Single Bed', rate: 145, discount: 15}
-const bookingTemplate = {name: 'Luis Navarro', email:'luisnavarro@example.com', checkin: '2024-01-01', checkout: '2024-01-02', discount: 15, room: {...roomTemplate}}
+const bookingTemplate = {name: 'Luis Navarro', email:'luisnavarro@example.com', checkin: '2024-01-01', checkout: '2024-01-03', discount: 15, room: {...roomTemplate}}
 
-describe('Room isOccupied()', () => {
+describe('Room is occupied', () => {
     const room = new Room({...roomTemplate})
     const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room})
     room.bookings = [ booking1 ]
@@ -130,5 +130,42 @@ describe(('Available rooms '), () => {
     })
     test('no rooms availables but match some days', () => {
         expect(room1.availableRooms(rooms, '2024-05-10', '2024-05-25')).toHaveLength(0)
+    })
+})
+
+describe('Get Fee', () => {
+    const room1 = new Room({...roomTemplate})
+    const booking1 = new Booking({...bookingTemplate, room: room1})
+    test('Room rate 145$ for two days should be 20953 cents', () => {
+        expect(booking1.getFee()).toBe(20953)
+    })
+    const booking7 = new Booking({...bookingTemplate, checkin: '2024-08-10', checkout: '2024-08-20'})
+    test('Room rate 145$ for ten days should be 104763 cents', () => {
+        expect(booking7.getFee()).toBe(104763)
+    })
+    const room2 = new Room({...roomTemplate, rate: 225, discount: 0})
+    const booking2 = new Booking({...bookingTemplate, room: room2})
+    test('Room rate 225$ --No Room Discount-- for two days should be 38250 cents ', () => {
+        expect(booking2.getFee()).toBe(38250)
+    })
+    const room3 = new Room({...roomTemplate, rate: 225})
+    const booking3 = new Booking({...bookingTemplate, discount: 0, room: room3})
+    test('Room rate 225$ --No Booking Discount-- for two days should be 38250 cents ', () => {
+        expect(booking3.getFee()).toBe(38250)
+    })
+    const room4 = new Room({...roomTemplate, rate: 225, discount: 0})
+    const booking4 = new Booking({...bookingTemplate, discount: 0, room: room4})
+    test('Room rate 225$ --No Discount-- for two days should be 45000 cents ', () => {
+        expect(booking4.getFee()).toBe(45000)
+    })
+    const room5 = new Room({...roomTemplate, rate: 225, discount: 100})
+    const booking5 = new Booking({...bookingTemplate, room: room5})
+    test('Room rate with 100% discount should be 0 cents ', () => {
+        expect(booking5.getFee()).toBe(0)
+    })
+    const room6 = new Room({...roomTemplate, rate: 225, discount: 101})
+    const booking6 = new Booking({...bookingTemplate, room: room6})
+    test('Room rate with crazy discount should throw an error ', () => {
+        expect(() => booking6.getFee()).toThrow("Discount not allowed")
     })
 })
