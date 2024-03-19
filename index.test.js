@@ -1,7 +1,7 @@
 const { Booking, Room } = require('./index')
 
-const bookingTemplate = {name: 'Luis Navarro', email:'luisnavarro@example.com'}
 const roomTemplate = { name: 'Single Bed', rate: 145, discount: 15}
+const bookingTemplate = {name: 'Luis Navarro', email:'luisnavarro@example.com', checkin: '2024-01-01', checkout: '2024-01-02', discount: 15, room: {...roomTemplate}}
 
 describe('Room isOccupied()', () => {
     const room = new Room({...roomTemplate})
