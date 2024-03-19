@@ -33,6 +33,12 @@ class Room {
     }
 
     availableRooms(rooms, startDate, endDate) {
+        const rangeQueryDates = getDatesInRange(startDate, endDate)
+        const isAvailableRoom = rooms.map(room => {
+            if (rangeQueryDates.some(date => room.isOccupied(date))) return false
+            return true 
+        })
+        return isAvailableRoom.filter(room => room === true).length
 
     }
 }
