@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest index.test.js",
+    "test-w": "jest --watch index.test.js",
     "test-cov": "jest --collectCoverage index.test.js"
   },
   "author": "",
