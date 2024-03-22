@@ -58,8 +58,8 @@ describe('Room percentage occupancy', () => {
     test('50% occupancy backward', () => {
         expect(room.occupancyPercentage('2023-12-31', '2024-01-03')).toBe(50)
     })
-    test('startDate is previous endDate', () => {
-        expect(room.occupancyPercentage('2024-01-05', '2024-01-01')).toBe(NaN)
+    test('endDate is previous startDate', () => {
+        expect(() => room.occupancyPercentage('2024-01-05', '2024-01-01')).toThrow('StartDate > EndDate')
     })
 })
 

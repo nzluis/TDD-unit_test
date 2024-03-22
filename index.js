@@ -18,12 +18,13 @@ class Room {
     }   
 
     occupancyPercentage(startDate, endDate) {
+        if (startDate > endDate) throw new Error('StartDate > EndDate')
         const rangeDates = getDatesInRange(startDate, endDate)
         let occupiedDays = 0
         rangeDates.map(date => this.isOccupied(date)).forEach(date => {
             if (date) occupiedDays++
         })
-        return Math.trunc((occupiedDays / rangeDates.length) *100)
+        return Math.floor((occupiedDays / rangeDates.length) *100)
     }
 
     totalOccupancyPercentage(rooms, startDate, endDate) {
