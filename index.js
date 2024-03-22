@@ -25,14 +25,14 @@ class Room {
         return Math.floor((occupiedDays / rangeDates.length) *100)
     }
 
-    totalOccupancyPercentage(rooms, startDate, endDate) {
+    static totalOccupancyPercentage(rooms, startDate, endDate) {
         const percentages = rooms.map( room => room.occupancyPercentage(startDate, endDate))
         return Math.trunc(percentages.reduce( (sum, percentage) =>  {
             return sum + percentage
         }, 0) /percentages.length)
     }
 
-    availableRooms(rooms, startDate, endDate) {
+    static availableRooms(rooms, startDate, endDate) {
         const rangeQueryDates = getDatesInRange(startDate, endDate)
         const availableRooms = rooms.map(room => {
             if (rangeQueryDates.some(date => room.isOccupied(date))) return false
