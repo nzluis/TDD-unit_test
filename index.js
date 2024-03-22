@@ -54,10 +54,9 @@ class Booking {
     }
 
     getFee() {
-        const ONE_DAY_MS = 24 * 60 * 60 * 1000; 
         const CONVERT_TO_CENTS = 100
         const roomFinalPricePerDay = this.room.rate  * (1 - this.room.discount/100) * CONVERT_TO_CENTS
-        const bookingLength = Math.round(Math.abs((new Date(this.checkin) - new Date(this.checkout)) / ONE_DAY_MS));
+        const bookingLength = getDatesInRange(this.checkin, this.checkout).length - 1;
         if (this.discount > 100 || this.room.discount > 100) throw new Error ('Discount not allowed')
         return Math.round(roomFinalPricePerDay * bookingLength * (1 - this.discount/100)) 
     }
