@@ -9,12 +9,10 @@ class Room {
     }
 
     isOccupied(date) {
-        let isDateInsideRange = false
         for (let i = 0; i < this.bookings.length ; i++) {
-            if (date >= this.bookings[i].checkin && date < this.bookings[i].checkout) isDateInsideRange = true
-            if (isDateInsideRange) break
+            if (date >= this.bookings[i].checkin && date < this.bookings[i].checkout) return true
         }
-        return isDateInsideRange
+        return false
     }   
 
     occupancyPercentage(startDate, endDate) {
