@@ -1,5 +1,4 @@
 const { Booking, Room } = require('./index')
-import { describe, expect, test } from '@jest/globals';
 
 const roomTemplate = { name: 'Single Bed', rate: 145, discount: 15 }
 const bookingTemplate = { name: 'Luis Navarro', email: 'luisnavarro@example.com', checkin: '2024-01-01', checkout: '2024-01-03', discount: 15, room: { ...roomTemplate } }
