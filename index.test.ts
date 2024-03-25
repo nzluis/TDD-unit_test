@@ -1,12 +1,13 @@
 const { Booking, Room } = require('./index')
+import { describe, expect, test } from '@jest/globals';
 
-const roomTemplate = { name: 'Single Bed', rate: 145, discount: 15}
-const bookingTemplate = {name: 'Luis Navarro', email:'luisnavarro@example.com', checkin: '2024-01-01', checkout: '2024-01-03', discount: 15, room: {...roomTemplate}}
+const roomTemplate = { name: 'Single Bed', rate: 145, discount: 15 }
+const bookingTemplate = { name: 'Luis Navarro', email: 'luisnavarro@example.com', checkin: '2024-01-01', checkout: '2024-01-03', discount: 15, room: { ...roomTemplate } }
 
 describe('Room is occupied', () => {
-    const room = new Room({...roomTemplate})
-    const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room})
-    room.bookings = [ booking1 ]
+    const room = new Room({ ...roomTemplate })
+    const booking1 = new Booking({ ...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room })
+    room.bookings = [booking1]
     test('available before', () => {
         expect(room.isOccupied('2023-12-25')).toBe(false)
     })
@@ -34,9 +35,9 @@ describe('Room is occupied', () => {
 })
 
 describe('Room percentage occupancy', () => {
-    const room = new Room({...roomTemplate})
-    const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room})
-    room.bookings = [ booking1 ]
+    const room = new Room({ ...roomTemplate })
+    const booking1 = new Booking({ ...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room })
+    room.bookings = [booking1]
     test('100% occupancy', () => {
         expect(room.occupancyPercentage('2024-01-02', '2024-01-05')).toBe(100)
     })
@@ -64,19 +65,19 @@ describe('Room percentage occupancy', () => {
 })
 
 describe('Total rooms percentage occupancy', () => {
-    const room1 = new Room({...roomTemplate})
-    const room2 = new Room({...roomTemplate, name: 'Double Bed'})
-    const room3 = new Room({...roomTemplate, name: 'Suite'})
-    const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room1})
-    const booking2 = new Booking({...bookingTemplate, checkin: '2024-02-02', checkout: '2024-02-06', room: room1})
-    const booking3 = new Booking({...bookingTemplate, checkin: '2024-05-10', checkout: '2024-05-15', room: room1})
-    const booking4 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room2})
-    const booking5 = new Booking({...bookingTemplate, checkin: '2024-02-06', checkout: '2024-02-10', room: room2})
-    const booking6 = new Booking({...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room2})
-    const booking7 = new Booking({...bookingTemplate, checkin: '2024-05-05', checkout: '2024-05-12', room: room2})
-    room1.bookings = [ booking1, booking2, booking3 ]
-    room2.bookings = [ booking4, booking5, booking6 ]
-    room3.bookings = [ booking1, booking6, booking7 ]
+    const room1 = new Room({ ...roomTemplate })
+    const room2 = new Room({ ...roomTemplate, name: 'Double Bed' })
+    const room3 = new Room({ ...roomTemplate, name: 'Suite' })
+    const booking1 = new Booking({ ...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room1 })
+    const booking2 = new Booking({ ...bookingTemplate, checkin: '2024-02-02', checkout: '2024-02-06', room: room1 })
+    const booking3 = new Booking({ ...bookingTemplate, checkin: '2024-05-10', checkout: '2024-05-15', room: room1 })
+    const booking4 = new Booking({ ...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room2 })
+    const booking5 = new Booking({ ...bookingTemplate, checkin: '2024-02-06', checkout: '2024-02-10', room: room2 })
+    const booking6 = new Booking({ ...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room2 })
+    const booking7 = new Booking({ ...bookingTemplate, checkin: '2024-05-05', checkout: '2024-05-12', room: room2 })
+    room1.bookings = [booking1, booking2, booking3]
+    room2.bookings = [booking4, booking5, booking6]
+    room3.bookings = [booking1, booking6, booking7]
     const rooms = [room1, room2, room3]
 
     test('100% total occupancy', () => {
@@ -94,21 +95,21 @@ describe('Total rooms percentage occupancy', () => {
 })
 
 describe(('Available rooms '), () => {
-    const room1 = new Room({...roomTemplate})
-    const room2 = new Room({...roomTemplate, name: 'Double Bed'})
-    const room3 = new Room({...roomTemplate, name: 'Suite'})
-    const booking1 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room1})
-    const booking2 = new Booking({...bookingTemplate, checkin: '2024-02-02', checkout: '2024-02-06', room: room1})
-    const booking3 = new Booking({...bookingTemplate, checkin: '2024-05-10', checkout: '2024-05-15', room: room1})
-    const booking4 = new Booking({...bookingTemplate, checkin: '2024-01-05', checkout: '2024-01-10', room: room2})
-    const booking5 = new Booking({...bookingTemplate, checkin: '2024-02-06', checkout: '2024-02-10', room: room2})
-    const booking6 = new Booking({...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room2})
-    const booking7 = new Booking({...bookingTemplate, checkin: '2024-05-05', checkout: '2024-05-12', room: room3})
-    const booking8 = new Booking({...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room3})
-    const booking9 = new Booking({...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room3})
-    room1.bookings = [ booking1, booking2, booking3 ]
-    room2.bookings = [ booking4, booking5, booking6 ]
-    room3.bookings = [ booking8, booking9, booking7 ]
+    const room1 = new Room({ ...roomTemplate })
+    const room2 = new Room({ ...roomTemplate, name: 'Double Bed' })
+    const room3 = new Room({ ...roomTemplate, name: 'Suite' })
+    const booking1 = new Booking({ ...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room1 })
+    const booking2 = new Booking({ ...bookingTemplate, checkin: '2024-02-02', checkout: '2024-02-06', room: room1 })
+    const booking3 = new Booking({ ...bookingTemplate, checkin: '2024-05-10', checkout: '2024-05-15', room: room1 })
+    const booking4 = new Booking({ ...bookingTemplate, checkin: '2024-01-05', checkout: '2024-01-10', room: room2 })
+    const booking5 = new Booking({ ...bookingTemplate, checkin: '2024-02-06', checkout: '2024-02-10', room: room2 })
+    const booking6 = new Booking({ ...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room2 })
+    const booking7 = new Booking({ ...bookingTemplate, checkin: '2024-05-05', checkout: '2024-05-12', room: room3 })
+    const booking8 = new Booking({ ...bookingTemplate, checkin: '2024-01-02', checkout: '2024-01-06', room: room3 })
+    const booking9 = new Booking({ ...bookingTemplate, checkin: '2024-05-20', checkout: '2024-05-25', room: room3 })
+    room1.bookings = [booking1, booking2, booking3]
+    room2.bookings = [booking4, booking5, booking6]
+    room3.bookings = [booking8, booking9, booking7]
     const rooms = [room1, room2, room3]
 
     test('3 rooms full available', () => {
@@ -137,37 +138,37 @@ describe(('Available rooms '), () => {
 })
 
 describe('Get Fee', () => {
-    const room1 = new Room({...roomTemplate})
-    const booking1 = new Booking({...bookingTemplate, room: room1})
+    const room1 = new Room({ ...roomTemplate })
+    const booking1 = new Booking({ ...bookingTemplate, room: room1 })
     test('Room rate 145$ for two days should be 20953 cents', () => {
         expect(booking1.getFee()).toBe(20953)
     })
-    const booking7 = new Booking({...bookingTemplate, checkin: '2024-08-10', checkout: '2024-08-20'})
+    const booking7 = new Booking({ ...bookingTemplate, checkin: '2024-08-10', checkout: '2024-08-20' })
     test('Room rate 145$ for ten days should be 104763 cents', () => {
         expect(booking7.getFee()).toBe(104763)
     })
-    const room2 = new Room({...roomTemplate, rate: 225, discount: 0})
-    const booking2 = new Booking({...bookingTemplate, room: room2})
+    const room2 = new Room({ ...roomTemplate, rate: 225, discount: 0 })
+    const booking2 = new Booking({ ...bookingTemplate, room: room2 })
     test('Room rate 225$ --No Room Discount-- for two days should be 38250 cents ', () => {
         expect(booking2.getFee()).toBe(38250)
     })
-    const room3 = new Room({...roomTemplate, rate: 225})
-    const booking3 = new Booking({...bookingTemplate, discount: 0, room: room3})
+    const room3 = new Room({ ...roomTemplate, rate: 225 })
+    const booking3 = new Booking({ ...bookingTemplate, discount: 0, room: room3 })
     test('Room rate 225$ --No Booking Discount-- for two days should be 38250 cents ', () => {
         expect(booking3.getFee()).toBe(38250)
     })
-    const room4 = new Room({...roomTemplate, rate: 225, discount: 0})
-    const booking4 = new Booking({...bookingTemplate, discount: 0, room: room4})
+    const room4 = new Room({ ...roomTemplate, rate: 225, discount: 0 })
+    const booking4 = new Booking({ ...bookingTemplate, discount: 0, room: room4 })
     test('Room rate 225$ --No Discount-- for two days should be 45000 cents ', () => {
         expect(booking4.getFee()).toBe(45000)
     })
-    const room5 = new Room({...roomTemplate, rate: 225, discount: 100})
-    const booking5 = new Booking({...bookingTemplate, room: room5})
+    const room5 = new Room({ ...roomTemplate, rate: 225, discount: 100 })
+    const booking5 = new Booking({ ...bookingTemplate, room: room5 })
     test('Room rate with 100% discount should be 0 cents ', () => {
         expect(booking5.getFee()).toBe(0)
     })
-    const room6 = new Room({...roomTemplate, rate: 225, discount: 101})
-    const booking6 = new Booking({...bookingTemplate, room: room6})
+    const room6 = new Room({ ...roomTemplate, rate: 225, discount: 101 })
+    const booking6 = new Booking({ ...bookingTemplate, room: room6 })
     test('Room rate with crazy discount should throw an error ', () => {
         expect(() => booking6.getFee()).toThrow("Discount not allowed")
     })
