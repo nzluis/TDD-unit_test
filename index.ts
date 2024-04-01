@@ -1,31 +1,31 @@
-interface roomInterface {
+interface RoomInterface {
     name: string;
     discount: number;
-    rate: number
-    bookings: Booking[]
+    rate: number;
+    bookings?: Booking[]
 }
 
-class Room implements roomInterface {
+class Room {
     name: string
     discount: number
     rate: number
     bookings: Booking[]
 
-    constructor({ name, rate, discount }: { name: string, rate: number, discount: number }) {
+    constructor({ name, rate, discount }: RoomInterface) {
         this.name = name
         this.bookings = []
         this.discount = discount
         this.rate = rate
     }
 
-    isOccupied(date) {
+    isOccupied(date: string): boolean {
         for (let i = 0; i < this.bookings.length; i++) {
             if (date >= this.bookings[i].checkin && date < this.bookings[i].checkout) return true
         }
         return false
     }
 
-    occupancyPercentage(startDate, endDate) {
+    occupancyPercentage(startDate: string, endDate: string): number {
         if (startDate > endDate) throw new Error('StartDate > EndDate')
         const rangeDates = getDatesInRange(startDate, endDate)
         let occupiedDays = 0
@@ -35,14 +35,14 @@ class Room implements roomInterface {
         return Math.floor((occupiedDays / rangeDates.length) * 100)
     }
 
-    static totalOccupancyPercentage(rooms, startDate, endDate) {
+    static totalOccupancyPercentage(rooms: Room[], startDate: string, endDate: string): number {
         const percentages = rooms.map(room => room.occupancyPercentage(startDate, endDate))
         return Math.floor(percentages.reduce((sum, percentage) => {
             return sum + percentage
         }, 0) / percentages.length)
     }
 
-    static availableRooms(rooms, startDate, endDate) {
+    static availableRooms(rooms: Room[], startDate: string, endDate: string): Array<any> {
         const rangeQueryDates = getDatesInRange(startDate, endDate)
         const availableRooms = rooms.map(room => {
             if (rangeQueryDates.some(date => room.isOccupied(date))) return false
@@ -53,7 +53,7 @@ class Room implements roomInterface {
     }
 }
 
-interface bookingInterface {
+interface BookingInterface {
     name: string
     email: string
     checkin: string
@@ -62,7 +62,7 @@ interface bookingInterface {
     room: Room
 }
 
-class Booking implements bookingInterface {
+class Booking {
     name: string
     email: string
     checkin: string
@@ -70,7 +70,7 @@ class Booking implements bookingInterface {
     discount: number
     room: Room
 
-    constructor({ name, email, checkin, checkout, discount, room }: { name: string, email: string, checkin: string, checkout: string, discount: number, room: Room }) {
+    constructor({ name, email, checkin, checkout, discount, room }: BookingInterface) {
         this.name = name
         this.email = email
         this.checkin = checkin
@@ -88,7 +88,7 @@ class Booking implements bookingInterface {
     }
 }
 
-function getDatesInRange(startDate, endDate) {
+function getDatesInRange(startDate: string, endDate: string) {
     const start = new Date(new Date(startDate))
     const end = new Date(new Date(endDate))
 
